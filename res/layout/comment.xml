@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/title_two_button" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#fff4f4f4" >
+
+        <EditText
+            android:id="@id/etCmtReason"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/relative_bottom"/>
+
+        <RelativeLayout
+            android:id="@id/relative_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:id="@id/tvCmtLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5.0dip"
+                android:layout_marginBottom="3.0dip"
+                android:textColor="#ff000000" />
+
+            <CheckBox
+                android:id="@id/rb_forward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/tvCmtLabel"
+                android:text="@string/comment_add_forward"
+                android:textColor="#ff000000" />
+
+            <CheckBox
+                android:id="@+id/comment_to_original_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rb_forward"
+                android:text="@string/comment_to_original_author" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

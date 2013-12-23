@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyWeibo</string>
+    <string name="loading">加载中....</string>
+    
+    <string name="title_activity_logon">微博登录</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="weibo_login">登录微博</string>
+    <string name="token_info">Token信息：</string>
+    <string name="token_already_existed">Token 仍在有效期内，无需再次登录。</string>
+    <string name="token_to_string_format_1">Token：%1$s \n有效期：%2$s</string>
+    <string name="title_activity_weibo">WeiboActivity</string>
+    <string name="action_account">账号</string>
+    <string name="action_settings">设置</string>
+    <string name="action_about">关于</string>
+    <string name="action_exit">退出</string>
+    <string name="title_activity_main">我的微博</string>
+    <string name="title_home">首页</string>
+    <string name="title_message">消息</string>
+    <string name="title_me">我</string>
+    <string name="check_weibo">看微博</string>
+    <string name="new_weibo">发微博</string>
+    <string name="forward_add_comment">同时作为评论发布</string>
+    <string name="comment_add_forward">同时发一条微博</string>
+    <string name="comment_to_original_author">同时评论给原文作者</string>
+    
+</resources>
