@@ -21,7 +21,7 @@ public class Status extends WeiboResponse implements java.io.Serializable {
 	private String text;                                 //微博内容
 	private Source source;                               //微博来源
 	private boolean favorited;                           //是否已收藏
-	private boolean truncated;
+	private boolean truncated;							 //是否被截断
 	private long inReplyToStatusId;                      //回复ID
 	private long inReplyToUserId;                        //回复人ID
 	private String inReplyToScreenName;                  //回复人昵称

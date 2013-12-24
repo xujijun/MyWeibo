@@ -29,12 +29,7 @@ public class WriteWeiboActivity extends FragmentActivity {
 				WeiboFragment nwf = new NewWeiboFragment();
 				transation.add(R.id.fragment_container, nwf);
 				transation.commit();
-			}
-			else if(it.getStringExtra("fragment").equals("ForwardFragment")){ //转发微博
-				//ForwardWeiboFragment fwf = new ForwardWeiboFragment();
-				//fwf.setArguments(it.getExtras());
-				
-			}else if(it.getStringExtra("fragment").equals("CommentFragment")){ //转发微博
+			}else if(it.getStringExtra("fragment").equals("CommentFragment")){ //评论或转发微博
 				CommentFragment cf = new CommentFragment();
 				//cf.setArguments(it.getExtras());
 				transation.add(R.id.fragment_container, cf);

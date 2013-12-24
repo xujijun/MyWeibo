@@ -11,6 +11,7 @@ public class WeiboConfig {
 	public static Properties props = new Properties(); 
 	
 	public static String getValue(String key){
+		//Changed by XJJ
 		//return props.getProperty(key);
 		return Constants.BaseURL;
 	}

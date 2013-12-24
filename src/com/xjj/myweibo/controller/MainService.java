@@ -8,6 +8,7 @@ import java.util.List;
 
 import weibo4j.Account;
 import weibo4j.Comments;
+import weibo4j.Favorite;
 import weibo4j.Timeline;
 import weibo4j.Users;
 import weibo4j.http.ImageItem;
@@ -24,6 +25,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.xjj.myweibo.model.AccessTokenKeeper;
 import com.xjj.myweibo.ui.WeiboFragment;
@@ -32,18 +34,16 @@ import com.xjj.myweibo.util.MyLog;
 
 
 public class MainService extends IntentService {
-
-
-
+	//向本Service注册的Fragment，以便被回调
 	private static ArrayList<WeiboFragment> allFragments=new ArrayList<WeiboFragment>();
-
 	
-    //                  用户id    头像
-    public static HashMap<String,BitmapDrawable> allicon
+    //                   用户id    头像
+    public static HashMap<String, BitmapDrawable> allicon
                            =new HashMap<String,BitmapDrawable>();
     
-    public static Timeline weibo ;
-    public static Comments cmt ;
+    public static Timeline weibo; //读微博、发微博
+    public static Comments cmt;   //发评论
+    public static Favorite favorite; //收藏、取消收藏
     
 	public MainService() throws WeiboException, JSONException {
 		super("XJJ");
@@ -55,12 +55,19 @@ public class MainService extends IntentService {
 		 um.client.setToken(AccessTokenKeeper.token);
 		 //JSONObject uid =am.getUid();
 		//User user = um.showUserById(uid.get("uid").toString());
+		 
+		//初始化微博处理类 
 		weibo = new Timeline();
 		weibo.setToken(AccessTokenKeeper.token);
 		//weibo.client.setToken(AccessTokenKeeper.token);
 		
+		//初始化评论类
 		cmt = new Comments();
 		cmt.setToken(AccessTokenKeeper.token);
+		
+		//初始化收藏类
+		favorite = new Favorite();
+		favorite.setToken(AccessTokenKeeper.token);
 
 	}
 	
@@ -88,7 +95,8 @@ public class MainService extends IntentService {
 				 List<Status> alls=astatus.getStatuses();
 				message.obj = alls;
 			} catch (WeiboException e) {
-				e.printStackTrace();
+				Toast.makeText(this, "刷新失败", Toast.LENGTH_LONG).show();
+				//e.printStackTrace();
 			}
 
 			break;
@@ -103,7 +111,8 @@ public class MainService extends IntentService {
 				List<Status> allsmore=weibo.getFriendsTimeline(0,0,new Paging(currentPage, pageSize)).getStatuses();
 				message.obj=allsmore;
 			} catch (WeiboException e) {
-				e.printStackTrace();
+				Toast.makeText(this, "获取失败", Toast.LENGTH_LONG).show();
+				//e.printStackTrace();
 			}
 	    	
 			break;
@@ -113,7 +122,7 @@ public class MainService extends IntentService {
 			// 获取该用户的头像
 			BitmapDrawable bd = GetPicFromURL.getPic(u.getProfileImageURL());
 			if (bd != null) {
-				Bitmap.createBitmap(bd.getBitmap());
+				//Bitmap.createBitmap(bd.getBitmap());
 				allicon.put(u.getId(), bd);
 			}
 			break;
@@ -124,7 +133,8 @@ public class MainService extends IntentService {
 				weibo.UpdateStatus(msg);
 				message.obj = 1;// 1表示发表成功
 			} catch (WeiboException e) {
-				e.printStackTrace();
+				Toast.makeText(this, "发表失败", Toast.LENGTH_LONG).show();
+				//e.printStackTrace();
 			}
 
 			break;
@@ -138,12 +148,14 @@ public class MainService extends IntentService {
 				ImageItem item = new ImageItem("pic", picdat);
 				weibo.UploadStatus(URLEncoder.encode(msg1, "UTF-8"), item);
 				
-				MyLog.t("Pic Msg:" + msg1);
+				//MyLog.t("Pic Msg:" + msg1);
 				message.obj = 1;// 1表示发表成功
 			} catch (WeiboException e) {
-				e.printStackTrace();
+				Toast.makeText(this, "发表失败", Toast.LENGTH_LONG).show();
+				//e.printStackTrace();
 			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+				Toast.makeText(this, "发表失败", Toast.LENGTH_LONG).show();
+				//e.printStackTrace();
 			}
 
 			break;
@@ -175,7 +187,8 @@ public class MainService extends IntentService {
 				}
 				message.obj = 1;// 1表示发表成功
 			} catch (Exception e) {
-				e.printStackTrace();
+				Toast.makeText(this, "发表评论失败", Toast.LENGTH_LONG).show();
+				//e.printStackTrace();
 			}
 			
 			break;
@@ -203,14 +216,35 @@ public class MainService extends IntentService {
 						weibo.Repost(id, comment, 0); // 0：只转发不评论
 					}
 				}
-				message.obj = 1;// 1表示发表成功
+				message.obj = 1;// 1表示成功
 			} catch (Exception e) {
-				
+				Toast.makeText(this, "转发失败", Toast.LENGTH_LONG).show();
 				//e.printStackTrace();
 			}
 			
 			break;
 			
+	    case TaskType.TS_CREATE_FAVORITE:
+	    	id = intent.getStringExtra("id");
+			MyLog.t("MainService --- Create Favorite ---- ID: " + id);
+
+	    	try {
+				favorite.createFavorites(id);
+				message.obj = 1;// 1表示成功
+			} catch (WeiboException e) {
+				Toast.makeText(this, "收藏失败", Toast.LENGTH_LONG).show();
+			}
+	    	break;
+	    	
+	    case TaskType.TS_DESTROY_FAVORITE:
+	    	id = intent.getStringExtra("id");
+	    	try {
+				favorite.destroyFavorites(id);
+				message.obj = 1;// 1表示成功
+			} catch (WeiboException e) {
+				Toast.makeText(this, "取消收藏失败", Toast.LENGTH_LONG).show();
+			}
+	    	break;
 
 		default:
 			// do nothing
@@ -262,8 +296,10 @@ public class MainService extends IntentService {
                  .refresh(msg.what,msg.obj);
                 break;
                 
-           case TaskType.TS_GET_FRIENDS_HOMETIMELINE_MORE:
-           case TaskType.TS_GET_FRIENDS_HOMETIMELINE://获取首页结果
+           case TaskType.TS_CREATE_FAVORITE:				//收藏
+           case TaskType.TS_DESTROY_FAVORITE:				//取消收藏
+           case TaskType.TS_GET_FRIENDS_HOMETIMELINE_MORE:	//获取更多微博
+           case TaskType.TS_GET_FRIENDS_HOMETIMELINE:		//获取首页结果
             	MainService.getFragmentByName("HomeFragment").refresh(msg.what, msg.obj);
 				//MyLog.t("getFragmentByName(HomeFragment)");
             	break;

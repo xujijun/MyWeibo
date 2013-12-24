@@ -76,8 +76,9 @@ public class Timeline extends Weibo{
 	 * @since JDK 1.5
 	 */
 	public StatusWapper getFriendsTimeline() throws WeiboException {
-		//return Status.constructWapperStatus(client.get(WeiboConfig.getValue("baseURL") + "statuses/friends_timeline.json"));
-		return Status.constructWapperStatus(client.get("https://api.weibo.com/2/" + "statuses/friends_timeline.json"));
+		return Status.constructWapperStatus(client.get(WeiboConfig.getValue("baseURL") + "statuses/friends_timeline.json"));
+		//Changed by XJJ
+		//return Status.constructWapperStatus(client.get("https://api.weibo.com/2/" + "statuses/friends_timeline.json"));
 
 	}
 
@@ -99,9 +100,9 @@ public class Timeline extends Weibo{
 	public StatusWapper getFriendsTimeline(Integer baseAPP, Integer feature,
 			Paging paging) throws WeiboException {
 		return Status.constructWapperStatus(client.get(
+				WeiboConfig.getValue("baseURL") + "statuses/friends_timeline.json",
 				//changed by XJJ
-				//WeiboConfig.getValue("baseURL") + "statuses/friends_timeline.json",
-				"https://api.weibo.com/2/" + "statuses/friends_timeline.json",
+				//"https://api.weibo.com/2/" + "statuses/friends_timeline.json",
 				new PostParameter[] {
 						new PostParameter("base_app", baseAPP.toString()),
 						new PostParameter("feature", feature.toString()) },
@@ -713,8 +714,9 @@ public class Timeline extends Weibo{
 	 * @since JDK 1.5
 	 */
 	public Status UpdateStatus(String status) throws WeiboException {
-		//return new Status(client.post(WeiboConfig.getValue("baseURL")
-		return new Status(client.post("https://api.weibo.com/2/"		
+		return new Status(client.post(WeiboConfig.getValue("baseURL")
+				//changed by XJJ
+				//return new Status(client.post("https://api.weibo.com/2/"		
 				+ "statuses/update.json",
 				new PostParameter[] { new PostParameter("status", status) }));
 	}
@@ -766,8 +768,9 @@ public class Timeline extends Weibo{
 	public Status UploadStatus(String status, ImageItem item)
 			throws WeiboException {
 		return new Status(client.multPartURL(
-				//WeiboConfig.getValue("baseURL") + "statuses/upload.json",
-				"https://api.weibo.com/2/" + "statuses/upload.json",
+				WeiboConfig.getValue("baseURL") + "statuses/upload.json",
+				//Changed by XJJ
+				//"https://api.weibo.com/2/" + "statuses/upload.json",
 				new PostParameter[] { new PostParameter("status", status)},
 				item));
 	}

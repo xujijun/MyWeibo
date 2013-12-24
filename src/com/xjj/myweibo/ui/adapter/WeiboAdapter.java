@@ -66,14 +66,13 @@ public class WeiboAdapter extends BaseAdapter{
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (position == 0){// 刷新
+		if (position == 0){ // 刷新
 			View weiboItem = LayoutInflater.from(context).inflate(R.layout.moreitemsview, null);
 			TextView tv = (TextView) weiboItem.findViewById(R.id.tvitemtitle);
 			tv.setText("刷新");
 			//MyLog.t("geView-----------position=0");
 			return weiboItem;
-		} else if (position == this.getCount() - 1)// 更多
-		{
+		} else if (position == this.getCount() - 1){// 更多
 			View weiboitem = LayoutInflater.from(context).inflate(
 					R.layout.moreitemsview, null);
 			TextView tv = (TextView) weiboitem.findViewById(R.id.tvitemtitle);
@@ -93,17 +92,16 @@ public class WeiboAdapter extends BaseAdapter{
 			}
 			//MyLog.t("geView----0-------position=" + position);
 
-			// 昵称
-			vh.ivItemPortrait = (ImageView) weiboItem.findViewById(R.id.ivItemPortrait);
-			vh.tvItemName = (TextView) weiboItem.findViewById(R.id.tvItemName);
-			vh.ivItemV = (ImageView) weiboItem.findViewById(R.id.ivItemV);
-			vh.tvItemDate = (TextView) weiboItem.findViewById(R.id.tvItemDate);
-			vh.ivItemPic = (ImageView) weiboItem.findViewById(R.id.ivItemPic);
-			vh.tvItemContent = (TextView) weiboItem.findViewById(R.id.tvItemContent);
-			vh.contentPic = (ImageView) weiboItem.findViewById(R.id.contentPic);
-			vh.subLayout = weiboItem.findViewById(R.id.subLayout);
-			vh.tvItemSubContent = (TextView) vh.subLayout.findViewById(R.id.tvItemSubContent);
-			vh.subContentPic = (ImageView) vh.subLayout.findViewById(R.id.subContentPic);
+			vh.ivItemPortrait = (ImageView) weiboItem.findViewById(R.id.ivItemPortrait);//头像
+			vh.tvItemName = (TextView) weiboItem.findViewById(R.id.tvItemName);//昵称
+			vh.ivItemV = (ImageView) weiboItem.findViewById(R.id.ivItemV);//加V标志
+			vh.tvItemDate = (TextView) weiboItem.findViewById(R.id.tvItemDate);//发表时间
+			vh.ivItemPic = (ImageView) weiboItem.findViewById(R.id.ivItemPic);//是否有图片的标志
+			vh.tvItemContent = (TextView) weiboItem.findViewById(R.id.tvItemContent);//微博正文
+			vh.contentPic = (ImageView) weiboItem.findViewById(R.id.contentPic);//？？？//TODO
+			vh.subLayout = weiboItem.findViewById(R.id.subLayout);//原微博
+			vh.tvItemSubContent = (TextView) vh.subLayout.findViewById(R.id.tvItemSubContent);//原微博正文
+			vh.subContentPic = (ImageView) vh.subLayout.findViewById(R.id.subContentPic);//元微博是否有图片 //TODO
 
 			Status status = allStatus.get(position - 1);
 			
@@ -111,11 +109,18 @@ public class WeiboAdapter extends BaseAdapter{
 			
 			String content = status.getText();
 			
+			//来源
 			if(status.getSource() != null)
 				content = content + "\n\n来自：" + status.getSource().getName();
-			
+			//转发数和评论数
 			content = content + "\n转发(" + status.getRepostsCount()
-					+ ") 评论(" + status.getCommentsCount() + ")";
+					+ ") | 评论(" + status.getCommentsCount() + ")";
+			//是否已收藏
+			if(status.isFavorited())
+				content += " | 已收藏";
+			else
+				content += " | 未收藏";
+				
 			vh.tvItemContent.setText(content);
 			
 			Status retweetedStatus = status.getRetweetedStatus();
@@ -132,7 +137,7 @@ public class WeiboAdapter extends BaseAdapter{
 					txt = txt + " 来自：" + retweetedStatus.getSource().getName();
 
 				txt = txt + "\n转发(" + retweetedStatus.getRepostsCount()
-						+ ") 评论(" + retweetedStatus.getCommentsCount() + ")";
+						+ ") | 评论(" + retweetedStatus.getCommentsCount() + ")";
 				
 				vh.tvItemSubContent.setText(txt);
 				

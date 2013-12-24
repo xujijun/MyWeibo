@@ -32,9 +32,33 @@ public class CommentFragment extends WeiboFragment {
 	private CheckBox comment_to_orig;
 	
 	private Intent itIn;
-	private String id;
-	private Boolean writeComment;
+	private String statusId;
+	private int Task = 0;
+	//private Boolean writeComment;
 	String currentContent = "";
+	
+	@Override
+	public void init() {
+		try {// 获取要评论微博的ID，是否写评价或转发，转发的内容
+			itIn = getActivity().getIntent();
+			statusId = itIn.getStringExtra("id");
+			if (statusId == null || statusId == "") {
+				Toast.makeText(getActivity(), "微博ID为空", Toast.LENGTH_LONG).show();
+				getActivity().finish();
+			} else {
+				Task = itIn.getIntExtra("Task", 0);
+				// writeComment = itIn.getBooleanExtra("writeComment", true);
+			}
+
+			currentContent = itIn.getStringExtra("currentContent");
+			MyLog.t(currentContent);
+
+		} catch (Exception e) {
+			Log.e("CommentFragment", "get ID from Intent Error!");
+			getActivity().finish();
+		}
+
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,13 +72,13 @@ public class CommentFragment extends WeiboFragment {
 		title = rootView.findViewById(R.id.title);
 		titleTv = (TextView)title.findViewById(R.id.textView);
 		
-		if(writeComment)
+		if(Task == TaskType.TS_COMMENT_WEIBO)
 			titleTv.setText("微博评论");
 		else
 			titleTv.setText("转发微博");
 		
 		editText = (EditText)rootView.findViewById(R.id.etCmtReason);
-		if(!writeComment){ //如果是转发，则初始化当前微博内容
+		if(Task == TaskType.TS_FORWARD_WEIBO){ //如果是转发，则初始化当前微博内容
 			editText.setText(currentContent);
 			MyLog.t(currentContent);
 		}
@@ -98,7 +122,7 @@ public class CommentFragment extends WeiboFragment {
 		
 		
 		rb_forward = (CheckBox) rootView.findViewById(R.id.rb_forward);
-		if(writeComment)
+		if(Task == TaskType.TS_COMMENT_WEIBO)
 			rb_forward.setText("同时转发到我的微博");
 		else
 			rb_forward.setText("同时评论给作者");
@@ -127,15 +151,11 @@ public class CommentFragment extends WeiboFragment {
 		        
 				Intent it = new Intent(getActivity(), MainService.class);
 				it.putExtra("comment", comment);
-				it.putExtra("id", id);
+				it.putExtra("statusId", statusId);
 
 				//转发或评论
-				if(writeComment){
-					it.putExtra("Task", TaskType.TS_COMMENT_WEIBO);
-				}
-				else{
-					it.putExtra("Task", TaskType.TS_FORWARD_WEIBO);
-				}
+				it.putExtra("Task", Task);
+
 				
 				//同时评论给原文作者
 				if(comment_to_orig.isChecked()){
@@ -160,27 +180,7 @@ public class CommentFragment extends WeiboFragment {
 		return rootView;
 	}
 
-	@Override
-	public void init() {
-		try{//获取要评论微博的ID，是否写评价或转发，转发的内容
-			itIn = getActivity().getIntent();
-			id = itIn.getStringExtra("id");
-			if(id==null||id==""){
-				Toast.makeText(getActivity(), "微博ID为空", Toast.LENGTH_LONG).show();
-				getActivity().finish();
-			}else{
-				writeComment = itIn.getBooleanExtra("writeComment", true);
-			}
-			
-			currentContent = itIn.getStringExtra("currentContent");
-			MyLog.t(currentContent);
-			
-		}catch(Exception e){
-			Log.e("CommentFragment", "get ID from Intent Error!");
-			getActivity().finish();
-		}
-		
-	}
+
 
 	@Override
 	public void refresh(Object... param) {
@@ -194,7 +194,7 @@ public class CommentFragment extends WeiboFragment {
 		
 		if (result == 1) {
 			String msg = null;
-			if(writeComment)
+			if(Task == TaskType.TS_COMMENT_WEIBO)
 				msg = "微博评论成功！";
 			else
 				msg = "微博转发成功！";
