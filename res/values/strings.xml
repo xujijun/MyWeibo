@@ -3,7 +3,6 @@
 
     <string name="app_name">MyWeibo</string>
     <string name="loading">加载中....</string>
-    
     <string name="title_activity_logon">微博登录</string>
     <string name="hello_world">Hello world!</string>
     <string name="weibo_login">登录微博</string>
@@ -21,8 +20,17 @@
     <string name="title_me">我</string>
     <string name="check_weibo">看微博</string>
     <string name="new_weibo">发微博</string>
+    <string name="weibo_info">微博详情</string>
+    
     <string name="forward_add_comment">同时作为评论发布</string>
     <string name="comment_add_forward">同时发一条微博</string>
     <string name="comment_to_original_author">同时评论给原文作者</string>
+    <string name="main_reload">刷新</string>
+    <string name="more">更多</string>
+    <string name="itemmenu_bookmark">收藏</string>
+    <string name="forward">转发</string>
+    <string name="comment">评论</string>
+    <string name="imageviewer_back">返回</string>
     
+
 </resources>

@@ -3,10 +3,8 @@ package com.xjj.myweibo.ui.adapter;
 import java.util.List;
 
 import weibo4j.model.Status;
-
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import com.xjj.myweibo.R;
 import com.xjj.myweibo.controller.MainService;
 import com.xjj.myweibo.controller.TaskType;
 import com.xjj.myweibo.util.DateUtil;
-import com.xjj.myweibo.util.MyLog;
 
 public class WeiboAdapter extends BaseAdapter{
 	
@@ -108,7 +105,6 @@ public class WeiboAdapter extends BaseAdapter{
 			vh.tvItemName.setText(status.getUser().getName());
 			
 			String content = status.getText();
-			
 			//来源
 			if(status.getSource() != null)
 				content = content + "\n\n来自：" + status.getSource().getName();
@@ -121,8 +117,27 @@ public class WeiboAdapter extends BaseAdapter{
 			else
 				content += " | 未收藏";
 				
-			vh.tvItemContent.setText(content);
+			vh.tvItemContent.setText(content); //微博正文
 			
+
+			//发表时间
+			vh.tvItemDate.setText(DateUtil.getCreateAt(status.getCreatedAt()));
+			
+			// 是否实名认证
+			if (status.getUser().isVerified()) {
+				vh.ivItemV.setVisibility(View.VISIBLE);
+			} else {
+				vh.ivItemV.setVisibility(View.GONE);
+			}
+			
+			// 判断有没有图片
+			if (status.getThumbnailPic() != null && !status.getThumbnailPic().equals("")) {
+				vh.ivItemPic.setVisibility(View.VISIBLE);
+			}else{
+				vh.ivItemPic.setVisibility(View.GONE);
+			}
+						
+			//原微博：
 			Status retweetedStatus = status.getRetweetedStatus();
 			if (retweetedStatus != null) {
 				vh.subLayout.setVisibility(View.VISIBLE);
@@ -141,6 +156,11 @@ public class WeiboAdapter extends BaseAdapter{
 				
 				vh.tvItemSubContent.setText(txt);
 				
+				// 判断原微博有没有图片
+				if (retweetedStatus.getThumbnailPic() != null && !retweetedStatus.getThumbnailPic().equals("")) {
+					vh.ivItemPic.setVisibility(View.VISIBLE);
+				}
+				
 				// TextViewLink.addURLSpan(" "
 				// +allStatus.get(position-1)
 				// .getRetweeted_status().getText(), vh.tvItemSubContent);
@@ -150,27 +170,6 @@ public class WeiboAdapter extends BaseAdapter{
 				vh.subLayout.setVisibility(View.GONE);
 			}
 
-			//发表时间
-			vh.tvItemDate.setText(DateUtil.getCreateAt(status.getCreatedAt()));
-			
-			// 是否实名认证
-			if (status.getUser().isVerified()) {
-				//Log.d("ok", "ok isVerified");
-				vh.ivItemV.setVisibility(View.VISIBLE);
-			} else {
-				vh.ivItemV.setVisibility(View.GONE);
-			}
-			
-			// 判断有没有图片
-			if (status.getThumbnailPic() != null) {
-				if (!status.getThumbnailPic().equals("")) {
-					vh.ivItemPic.setVisibility(View.VISIBLE);
-				} else {
-					vh.ivItemPic.setVisibility(View.GONE);
-				}
-			}else{
-				vh.ivItemPic.setVisibility(View.GONE);
-			}
 			
 			// 头像
 			// 如果头像已经下载
@@ -180,11 +179,6 @@ public class WeiboAdapter extends BaseAdapter{
 			} else {// 设定缺省的图片
 				vh.ivItemPortrait.setImageResource(R.drawable.portrait);
 				// 获取头像
-//				HashMap hm = new HashMap();
-//				hm.put("us", allStatus.get(position - 1).getUser());
-//				Task ts = new Task(TaskType.TS_GET_USER_ICON, hm);
-//				MainService.newTask(ts);
-				
 				if (true) {//TODO 判断设置，是否要显示用户头像
 					Intent it = new Intent(context, MainService.class);
 					it.putExtra("Task", TaskType.TS_GET_USER_ICON);

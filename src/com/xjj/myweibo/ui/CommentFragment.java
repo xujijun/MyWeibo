@@ -64,8 +64,6 @@ public class CommentFragment extends WeiboFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-
-		
 		View rootView = inflater.inflate(R.layout.comment, container, false);
 		
 		//标题文字
@@ -151,7 +149,7 @@ public class CommentFragment extends WeiboFragment {
 		        
 				Intent it = new Intent(getActivity(), MainService.class);
 				it.putExtra("comment", comment);
-				it.putExtra("statusId", statusId);
+				it.putExtra("id", statusId);
 
 				//转发或评论
 				it.putExtra("Task", Task);

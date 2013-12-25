@@ -17,8 +17,10 @@
             android:id="@id/etCmtReason"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:layout_above="@id/relative_bottom"
             android:layout_alignParentTop="true"
-            android:layout_above="@id/relative_bottom"/>
+            android:gravity="top"
+            android:inputType="text" />
 
         <RelativeLayout
             android:id="@id/relative_bottom"

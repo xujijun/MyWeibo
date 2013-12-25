@@ -20,7 +20,6 @@ import weibo4j.model.WeiboException;
 import weibo4j.org.json.JSONException;
 import android.app.IntentService;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;

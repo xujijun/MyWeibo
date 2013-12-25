@@ -45,6 +45,11 @@
             android:label="@string/new_weibo"
             android:windowSoftInputMode="adjustResize" >
         </activity>
+                <activity
+            android:name="com.xjj.myweibo.ui.WeiboInfoActivity"
+            android:label="@string/weibo_info"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
         <service android:enabled="true" android:name="com.xjj.myweibo.controller.MainService" />
     </application>
 

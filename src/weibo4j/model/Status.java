@@ -37,10 +37,12 @@ public class Status extends WeiboResponse implements java.io.Serializable {
 	private String annotations;                          //元数据，没有时不返回此字段
 	private int mlevel;
 	private Visible visible;
+	
 	public Status()
 	{
 
 	}
+	
 	public Status(Response res)throws WeiboException{
 		super(res);
 		JSONObject json=res.asJSONObject();

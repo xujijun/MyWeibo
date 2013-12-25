@@ -69,8 +69,16 @@
             android:layout_alignParentTop="true"
             android:background="@drawable/editbox_background_focus_yellow" >
 
-            <!-- 默认android:visibility="invisible" -->
-
+            <EditText
+                android:id="@id/etBlog"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_above="@id/linear_progress"
+                android:background="@android:color/transparent"
+                android:bufferType="spannable"
+                android:gravity="top"
+                android:inputType="text" />
+            
             <LinearLayout
                 android:id="@id/linear_progress"
                 android:layout_width="fill_parent"
@@ -86,8 +94,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2.0dip"
                     android:indeterminateDrawable="@drawable/progress_small" />
+                
                 <!-- 进度条后面的文字 -->
-
                 <TextView
                     android:id="@id/text_location"
                     android:layout_width="wrap_content"
@@ -97,14 +105,7 @@
                     android:gravity="right|center" />
             </LinearLayout>
 
-            <EditText
-                android:id="@id/etBlog"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_above="@id/linear_progress"
-                android:background="@android:color/transparent"
-                android:bufferType="spannable"
-                android:gravity="top" />
+
         </RelativeLayout>
     </RelativeLayout>
 

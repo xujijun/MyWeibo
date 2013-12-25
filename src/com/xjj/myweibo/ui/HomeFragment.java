@@ -66,7 +66,7 @@ public class HomeFragment extends WeiboFragment {
 		View rootView = inflater.inflate(R.layout.fragment_home, container,
 				false);
 
-		MyLog.t("HomeFragment ----------- onCreateVew() --- 1 ");
+		//MyLog.t("HomeFragment ----------- onCreateVew() --- 1 ");
 
 		progress = rootView.findViewById(R.id.progress);
 		if (isRefreshing)
@@ -76,7 +76,7 @@ public class HomeFragment extends WeiboFragment {
 
 		View title = rootView.findViewById(R.id.freelook_title);
 
-		MyLog.t("HomeFragment ----------- onCreateVew() --- 2 ");
+		//MyLog.t("HomeFragment ----------- onCreateVew() --- 2 ");
 
 		// 发微博按钮
 		Button btleft = (Button) title.findViewById(R.id.title_bt_left);
@@ -92,7 +92,7 @@ public class HomeFragment extends WeiboFragment {
 
 		});
 
-		MyLog.t("HomeFragment ----------- onCreateVew() --- 3 ");
+		//MyLog.t("HomeFragment ----------- onCreateVew() --- 3 ");
 
 		// 刷新按钮
 		Button btright = (Button) title.findViewById(R.id.title_bt_right);
@@ -109,7 +109,7 @@ public class HomeFragment extends WeiboFragment {
 
 		});
 
-		MyLog.t("HomeFragment ----------- onCreateVew() --- 4 ");
+		//MyLog.t("HomeFragment ----------- onCreateVew() --- 4 ");
 
 		tv = (TextView) title.findViewById(R.id.textView);
 		// TODO
@@ -120,6 +120,8 @@ public class HomeFragment extends WeiboFragment {
 		lv = (ListView) rootView.findViewById(R.id.freelook_listview);
 		if(wa != null)
 			lv.setAdapter(wa);
+		else
+			init();
 			
 		// 绑定上下文菜单
 		registerForContextMenu(lv);
@@ -160,17 +162,16 @@ public class HomeFragment extends WeiboFragment {
 					// progress.setVisibility(View.VISIBLE);
 
 				} else {
-					// TODO 打开微博详情
-					// it = new Intent(getActivity(), WeiboInfoActivity.class);
-					// Status st = (Status) parent.getItemAtPosition(position);
-					// it.putExtra("status", st);
-					// HomeActivity.this.startActivityForResult(it, 0);
+					it = new Intent(getActivity(), WeiboInfoActivity.class);
+					Status st = (Status) parent.getItemAtPosition(position);
+					it.putExtra("status", st);
+					startActivity(it);
 				}
 			}
 
 		});
 
-		MyLog.t("HomeFragment -------------- onCreateVew() --- end");
+		//MyLog.t("HomeFragment -------------- onCreateVew() --- end");
 		return rootView;
 	}
 
@@ -383,7 +384,7 @@ public class HomeFragment extends WeiboFragment {
 			List<Status> ls = (List<Status>) param[1];
 			if (ls != null) {
 				wa.addNewData(ls);
-				wa.notifyDataSetChanged();
+				//wa.notifyDataSetChanged();
 				lv.setSelection(savedPosition - 1);
 			}
 			break;
