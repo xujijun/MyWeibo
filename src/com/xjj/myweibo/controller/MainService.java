@@ -1,6 +1,8 @@
 package com.xjj.myweibo.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,7 +96,7 @@ public class MainService extends IntentService {
 				 List<Status> alls=astatus.getStatuses();
 				message.obj = alls;
 			} catch (WeiboException e) {
-				Toast.makeText(this, "刷新失败", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "刷新失败", Toast.LENGTH_SHORT).show();
 				//e.printStackTrace();
 			}
 
@@ -110,7 +112,7 @@ public class MainService extends IntentService {
 				List<Status> allsmore=weibo.getFriendsTimeline(0,0,new Paging(currentPage, pageSize)).getStatuses();
 				message.obj=allsmore;
 			} catch (WeiboException e) {
-				Toast.makeText(this, "获取失败", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "获取失败", Toast.LENGTH_SHORT).show();
 				//e.printStackTrace();
 			}
 	    	
@@ -132,7 +134,7 @@ public class MainService extends IntentService {
 				weibo.UpdateStatus(msg);
 				message.obj = 1;// 1表示发表成功
 			} catch (WeiboException e) {
-				Toast.makeText(this, "发表失败", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "发表失败", Toast.LENGTH_SHORT).show();
 				//e.printStackTrace();
 			}
 
@@ -150,10 +152,10 @@ public class MainService extends IntentService {
 				//MyLog.t("Pic Msg:" + msg1);
 				message.obj = 1;// 1表示发表成功
 			} catch (WeiboException e) {
-				Toast.makeText(this, "发表失败", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "发表失败", Toast.LENGTH_SHORT).show();
 				//e.printStackTrace();
 			} catch (UnsupportedEncodingException e) {
-				Toast.makeText(this, "发表失败", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "发表失败", Toast.LENGTH_SHORT).show();
 				//e.printStackTrace();
 			}
 
@@ -186,7 +188,7 @@ public class MainService extends IntentService {
 				}
 				message.obj = 1;// 1表示发表成功
 			} catch (Exception e) {
-				Toast.makeText(this, "发表评论失败", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "发表评论失败", Toast.LENGTH_SHORT).show();
 				//e.printStackTrace();
 			}
 			
@@ -217,7 +219,7 @@ public class MainService extends IntentService {
 				}
 				message.obj = 1;// 1表示成功
 			} catch (Exception e) {
-				Toast.makeText(this, "转发失败", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "转发失败", Toast.LENGTH_SHORT).show();
 				//e.printStackTrace();
 			}
 			
@@ -231,7 +233,7 @@ public class MainService extends IntentService {
 				favorite.createFavorites(id);
 				message.obj = 1;// 1表示成功
 			} catch (WeiboException e) {
-				Toast.makeText(this, "收藏失败", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "收藏失败", Toast.LENGTH_SHORT).show();
 			}
 	    	break;
 	    	
@@ -241,8 +243,20 @@ public class MainService extends IntentService {
 				favorite.destroyFavorites(id);
 				message.obj = 1;// 1表示成功
 			} catch (WeiboException e) {
-				Toast.makeText(this, "取消收藏失败", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "取消收藏失败", Toast.LENGTH_SHORT).show();
 			}
+	    	break;
+	    	
+	    case TaskType.TS_GET_STATUS_PIC:
+	    	String url = intent.getStringExtra("url");
+	    	MyLog.t("Pic URL:" + url);
+			try {
+				BitmapDrawable bd02=GetPicFromURL.getPic(new URL(url));
+				message.obj=bd02;
+			} catch (MalformedURLException e) {
+				Toast.makeText(this, "获取图片失败", Toast.LENGTH_SHORT).show();
+			}
+	    	
 	    	break;
 
 		default:
@@ -312,9 +326,8 @@ public class MainService extends IntentService {
             	MainService.getFragmentByName("CommentFragment").refresh(msg.what, msg.obj);
             	break;
             	
-            case TaskType.TS_GET_STATUS_PIC:
-              	MainService.getFragmentByName("WeiboInfoActivity")
-            	.refresh(msg.what,msg.obj);
+            case TaskType.TS_GET_STATUS_PIC://下载图片
+              	MainService.getFragmentByName("WeiboInfoFragment").refresh(msg.what, msg.obj);
             	break;
             	
             case TaskType.TS_GET_STATUS_PIC_ORI:
@@ -325,8 +338,9 @@ public class MainService extends IntentService {
             case TaskType.TS_NEW_WEIBO:
             case TaskType.TS_NEW_WEIBO_PIC:
             case TaskType.TS_NEW_WEIBO_GPS:
-            	MainService.getFragmentByName("NewWeiboFragment")
-            	 .refresh(msg.what,msg.obj);
+            	MainService.getFragmentByName("NewWeiboFragment").refresh(msg.what,msg.obj);
+            	break;
+            	
            }
 		}
 	};

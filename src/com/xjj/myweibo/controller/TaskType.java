@@ -7,9 +7,12 @@ public class TaskType {
   public static final int TS_GET_FRIENDS_HOMETIMELINE_MORE=21;//获取下一页信息
   
   public static final int TS_GET_USER_ICON=32;//获取用户头像
-  public static final int TS_GET_STATUS_PIC=33;//下载微博图片
-  public static final int TS_GET_STATUS_PIC_ORI=34;//获取原始图片
-  public static final int TS_GET_HUATI=35;//获取话题
+  
+  public static final int TS_GET_STATUS_PIC=33;//下载微博小图片
+  public static final int TS_GET_STATUS_PIC_MID=34;//下载微博中图片
+  public static final int TS_GET_STATUS_PIC_ORI=35;//获取原始图片
+  
+  public static final int TS_GET_HUATI=36;//获取话题
   
   public static final int TS_NEW_WEIBO=4;//发表微博
   public static final int TS_NEW_WEIBO_PIC=41;//发表图片微博

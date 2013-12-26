@@ -141,11 +141,13 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3.0dip"
+                        android:autoLink="web"
                         android:bufferType="spannable"
                         android:paddingLeft="10.0dip"
                         android:paddingRight="10.0dip"
                         android:textColor="#ff222222"
                         android:textSize="18.0sp" />
+
                     <!-- 转发内容 默认不显示 -->
 
                     <LinearLayout
@@ -165,11 +167,13 @@
                             android:id="@id/tweet_oriTxt"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
+                            android:autoLink="web"
                             android:bufferType="spannable"
                             android:paddingLeft="10.0dip"
                             android:paddingRight="10.0dip"
                             android:textColor="#ff222222"
                             android:textSize="16.0sp" />
+
                         <!-- 转发内容图片 -->
 
                         <ImageView

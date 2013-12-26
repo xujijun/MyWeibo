@@ -21,6 +21,7 @@
     <string name="check_weibo">看微博</string>
     <string name="new_weibo">发微博</string>
     <string name="weibo_info">微博详情</string>
+    <string name="title_mblog_content">微博正文</string>
     
     <string name="forward_add_comment">同时作为评论发布</string>
     <string name="comment_add_forward">同时发一条微博</string>
