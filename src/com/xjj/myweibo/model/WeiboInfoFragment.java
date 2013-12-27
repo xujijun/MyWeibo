@@ -42,21 +42,27 @@ public class WeiboInfoFragment extends WeiboFragment  implements OnClickListener
 	
 	private Status status;
 	private ImageView tweet_upload_pic;
+	private boolean hasPic = false;
 
 	@Override
 	public void init() {
 		//获取传递过来的微博信息
 		status= (Status) getActivity().getIntent().getSerializableExtra("status");
 		
-		if(status.getThumbnailPic()!=null && status.getThumbnailPic().length()>0)
+		String midPicUrl = status.getBmiddlePic();
+		hasPic = (midPicUrl!=null && midPicUrl.length()>0);
+		if(hasPic)
 		{//发送任务下载图片
 			Intent it = new Intent(getActivity(), MainService.class);
-			it.putExtra("Task", TaskType.TS_GET_STATUS_PIC);
-			it.putExtra("rul", status.getThumbnailPic());
+			it.putExtra("Task", TaskType.TS_GET_STATUS_PIC_MID);
+			it.putExtra("from", "WeiboInfo");
+			it.putExtra("url", midPicUrl);
 			getActivity().startService(it);
+			
+			MyLog.t("WeiboInfofragment---getMidPic");
 		}
 		
-		MyLog.t("WeiboInfofragment---init() 1");
+		//MyLog.t("WeiboInfofragment---init() 1");
 
 	}
 	
@@ -65,7 +71,7 @@ public class WeiboInfoFragment extends WeiboFragment  implements OnClickListener
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		MyLog.t("WeiboInfoFragment---onCreateView 1");
+		//MyLog.t("WeiboInfoFragment---onCreateView 1");
 
 		View rootView = inflater.inflate(R.layout.detailweibo, container, false);
 
@@ -123,6 +129,8 @@ public class WeiboInfoFragment extends WeiboFragment  implements OnClickListener
 		
 	    //图片（大小？）
 		tweet_upload_pic = (ImageView) rootView.findViewById(R.id.tweet_upload_pic);
+		if(hasPic)
+			tweet_upload_pic.setVisibility(View.VISIBLE);
 		tweet_upload_pic.setOnClickListener(new OnClickListener(){
         	@Override
 			public void onClick(View v) {
@@ -156,13 +164,13 @@ public class WeiboInfoFragment extends WeiboFragment  implements OnClickListener
 		
 		//评论
 		TextView tweet_comment =(TextView) rootView.findViewById(R.id.tweet_comment);
-		tweet_comment.setText("评论[未知]");//
+		tweet_comment.setText("评论[" + status.getCommentsCount() + "]");//
 		tweet_comment.setTag(COMMENTLIST);
 		tweet_comment.setOnClickListener(this);
 		
 		//转发
 		TextView tweet_redirect =(TextView) rootView.findViewById(R.id.tweet_redirect);
-		tweet_redirect.setText("转发[未知]");//
+		tweet_redirect.setText("转发[" + status.getRepostsCount() + "]");//
 		
 		//来源
 		TextView tweet_via =(TextView) rootView.findViewById(R.id.tweet_via);
@@ -279,21 +287,21 @@ public class WeiboInfoFragment extends WeiboFragment  implements OnClickListener
 		} else if (type == TaskType.TS_FORWARD_WEIBO) {
 			Toast.makeText(getActivity(), "转发微博成功", 500).show();
 			
-		} else if (type == TaskType.TS_GET_STATUS_PIC) {
+		} else if (type == TaskType.TS_GET_STATUS_PIC_MID) {
 			if(param[1] == null){
-				Toast.makeText(getActivity(), "转发微博成功", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "获取中型图片失败", Toast.LENGTH_SHORT).show();
 				return;
 			}
 			
 			Bitmap contextBt = ((BitmapDrawable) param[1]).getBitmap();
 			
 			tweet_upload_pic.setImageBitmap(contextBt);
-			tweet_upload_pic.setVisibility(View.VISIBLE);
+			//tweet_upload_pic.setVisibility(View.VISIBLE);
 			
-			Toast t = Toast.makeText(getActivity(), "获取图片成功", 500);
-			ImageView iv = new ImageView(getActivity());
-			iv.setImageBitmap(contextBt);
-			t.setView(iv);
+			Toast t = Toast.makeText(getActivity(), "获取中型图片成功", 500);
+			//ImageView iv = new ImageView(getActivity());
+			//iv.setImageBitmap(contextBt);
+			//t.setView(iv);
 			t.show();
 		}
 	}

@@ -21,10 +21,10 @@ public class WeiboInfoActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_write_weibo);
 
-		MyLog.t("WeiboInfoActivity---onCreate 1");
+		//MyLog.t("WeiboInfoActivity---onCreate 1");
 
 		if(findViewById(R.id.fragment_container) != null){
-			MyLog.t("WeiboInfoActivity---onCreate 2");
+			//MyLog.t("WeiboInfoActivity---onCreate 2");
 
 			FragmentTransaction transation = getSupportFragmentManager().beginTransaction();
 

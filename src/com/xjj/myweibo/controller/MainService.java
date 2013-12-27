@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -247,7 +248,7 @@ public class MainService extends IntentService {
 			}
 	    	break;
 	    	
-	    case TaskType.TS_GET_STATUS_PIC:
+	    case TaskType.TS_GET_STATUS_PIC_MID: //获取中型图片
 	    	String url = intent.getStringExtra("url");
 	    	MyLog.t("Pic URL:" + url);
 			try {
@@ -283,7 +284,6 @@ public class MainService extends IntentService {
 			if (wa.getClass().getName().indexOf(aname) >= 0) {
 				return wa;
 			}
-
 		}
 		return null;
 	}
@@ -326,8 +326,11 @@ public class MainService extends IntentService {
             	MainService.getFragmentByName("CommentFragment").refresh(msg.what, msg.obj);
             	break;
             	
-            case TaskType.TS_GET_STATUS_PIC://下载图片
-              	MainService.getFragmentByName("WeiboInfoFragment").refresh(msg.what, msg.obj);
+            case TaskType.TS_GET_STATUS_PIC_MID://下载中型图片
+            	WeiboFragment f = MainService.getFragmentByName("WeiboInfoFragment");
+            	if(f != null)
+            		f.refresh(msg.what, msg.obj);
+              	//MyLog.t("MainService---Handler Pic Mid: " + msg.obj.toString());
             	break;
             	
             case TaskType.TS_GET_STATUS_PIC_ORI:

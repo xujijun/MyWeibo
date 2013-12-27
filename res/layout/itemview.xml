@@ -22,6 +22,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5.0dip"
+        android:descendantFocusability="blocksDescendants"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -92,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10.0dip"
             android:autoLink="web"
+            android:linksClickable="true"
             android:text="内内容内容内容内容内容容"
             android:textColor="#ff414951"
             android:textSize="15.0sp" />
@@ -110,6 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4.0dip"
             android:background="@drawable/popup"
+            android:descendantFocusability="blocksDescendants"
             android:orientation="vertical"
             android:visibility="gone" >
 

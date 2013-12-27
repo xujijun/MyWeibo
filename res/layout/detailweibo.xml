@@ -63,7 +63,8 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants" >
 
                 <RelativeLayout
                     android:id="@id/tweet_profile"
@@ -132,7 +133,8 @@
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:layout_below="@id/tweet_divider" >
+                    android:layout_below="@id/tweet_divider"
+                    android:descendantFocusability="blocksDescendants" >
 
                     <!-- 微博内容 -->
 
